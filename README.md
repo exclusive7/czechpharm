@@ -1,16 +1,110 @@
-# React + Vite
+# Czechfarm Alliance Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive corporate website developed using **React + Vite** for a pharmaceutical company.
 
-Currently, two official plugins are available:
+## 🌐 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+https://czech-farm.vercel.app
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 📌 About Project
 
-## Expanding the ESLint configuration
+This project represents a modern corporate website developed for a pharmaceutical company.
+The website provides structured information about the company, its products, career opportunities, library resources, and contact details.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The goal of this project was to build a clean, responsive, and professional multi-page website using modern frontend technologies.
+
+---
+
+## 🚀 Features
+
+* Responsive design (mobile, tablet, desktop)
+* Multi-page navigation using React Router
+* Products catalog section
+* Vacancies and career pages
+* Library with downloadable resources
+* Contact form with validation
+* Reusable UI components
+
+---
+
+## 🛠 Tech Stack
+
+Frontend:
+
+* React
+* Vite
+* JavaScript
+* CSS
+
+Libraries:
+
+* React Router
+* Tailwind CSS / Custom CSS
+
+Deployment:
+
+* Vercel
+
+---
+
+## 📂 Project Structure
+
+src/
+├── assets/        # images, icons, media files
+├── components/    # reusable UI components
+├── layout/        # header, footer, layout structure
+├── pages/         # main website pages
+├── styles/        # global styles
+├── utils/         # helper functions
+├── App.jsx
+└── main.jsx
+
+---
+
+## 🧩 Pages Included
+
+* Home
+* About
+* Products
+* Library
+* Vacancies
+* Vacancy Details
+* Contact
+
+---
+
+## ⚙️ Installation
+
+To run this project locally:
+
+git clone https://github.com/gulmira1990/CzechFarm.git
+cd CzechFarm
+npm install
+npm run dev
+
+---
+
+## 🌍 Deployment
+
+The project is deployed using **Vercel**.
+
+Live site:
+https://czech-farm.vercel.app
+
+---
+
+## 👩‍💻 Developer
+
+Frontend Developer
+**Gulmira Ilyasova**
+
+---
+
+## 🎯 Project Purpose
+
+This website was developed as a frontend solution for a pharmaceutical company.
+The objective of the project was to create a modern, responsive, and user-friendly corporate website that presents company information, products, vacancies, and medical resources in a clear and accessible way.
+
+The project focuses on building a clean UI structure, responsive layouts, and scalable frontend architecture using modern web technologies.
