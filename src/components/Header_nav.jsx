@@ -1,5 +1,4 @@
 import { NavLink } from "react-router-dom";
-
 import { useState, useEffect, useRef } from "react";
 import burgerIcon from "../assets/icons/Nav.svg";
 import searchIcon from "../assets/icons/Search.svg";
