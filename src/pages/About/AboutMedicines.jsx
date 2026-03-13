@@ -58,38 +58,48 @@ export default function AboutMedicines() {
         <img
           src={capsulemed1}
           alt=""
-          className="absolute -top-[20px] left-[10px] lg:left-[5px] w-[40px] lg:w-[60px]"
+          className="absolute -top-[20px] left-[10px] lg:left-[5px] w-[40px] lg:w-[60px] animate-float"
         />
 
         <img
           src={capsulemed2}
           alt=""
-          className="absolute -top-[20px] right-[40px] lg:right-[348px] w-[50px] lg:w-[70px]"
+          className="absolute -top-[20px] right-[40px] lg:right-[348px] w-[50px] lg:w-[70px] animate-float"
         />
 
         <img
           src={capsulemed3}
           alt=""
-          className="absolute bottom-[60px] left-[40px] lg:left-[154px] w-[50px] lg:w-[70px]"
+          className="absolute bottom-[60px] left-[40px] lg:left-[154px] w-[50px] lg:w-[70px] animate-float"
         />
 
         <img
           src={capsulemed4}
           alt=""
-          className="hidden lg:block absolute top-[560px] left-[600px] w-[70px]"
+          className="hidden lg:block absolute top-[560px] left-[600px] w-[70px] animate-float"
         />
 
         <img
           src={capsulemed5}
           alt=""
-          className="absolute bottom-[80px] right-[20px] lg:right-[40px] w-[50px] lg:w-[70px]"
+          className="absolute bottom-[80px] right-[20px] lg:right-[40px] w-[50px] lg:w-[70px] animate-float"
         />
 
         <img
-          src={logo}
-          alt=""
-          className="absolute bottom-[220px] lg:bottom-[260px] left-[100px] lg:left-[130px] w-[100px] lg:w-[153px]"
-        />
+  src={logo}
+  alt=""
+  className="
+  absolute
+  left-[35%]
+  top-[65%]
+  lg:left-[120px]
+  lg:top-[280px]
+  -translate-y-1/2
+  lg:translate-y-0
+  w-[100px]
+  lg:w-[153px]
+"
+/>
       </div>
     </section>
   );
