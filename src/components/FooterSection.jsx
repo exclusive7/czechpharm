@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import footerBg from "../assets/images/Nav.svg";
 import logo from "../assets/images/CzechFarm_logo_white.svg";
 
@@ -26,27 +28,66 @@ export default function Footer() {
 
             {/* LOGO */}
             <div className="flex justify-center lg:justify-start">
-              <img
-                src={logo}
-                alt="Czechfarm"
-                className="w-[150px] lg:w-[200px]"
-              />
+              <Link to="/">
+                <img
+                  src={logo}
+                  alt="Czechfarm"
+                  className="w-[150px] lg:w-[200px]"
+                />
+              </Link>
             </div>
 
             {/* MENUS */}
             <div className="grid grid-cols-2 gap-[40px] lg:gap-[160px] text-[14px] lg:text-[16px] text-white font-bold text-center lg:text-left pt-[10px]">
 
               <ul className="space-y-3">
-                <li className="cursor-pointer">Про компанию</li>
-                <li className="cursor-pointer">Препараты</li>
-                <li className="cursor-pointer">Библиотека</li>
-                <li className="cursor-pointer">Партнеры</li>
+
+                <li>
+                  <Link to="/about" className="hover:opacity-80 transition">
+                    Про компанию
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/products" className="hover:opacity-80 transition">
+                    Препараты
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/library" className="hover:opacity-80 transition">
+                    Библиотека
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/contacts" className="hover:opacity-80 transition">
+                    Контакты
+                  </Link>
+                </li>
+
               </ul>
 
               <ul className="space-y-3">
-                <li className="cursor-pointer">Партнеры</li>
-                <li className="cursor-pointer">Вакансии</li>
-                <li className="cursor-pointer">Обратная связь</li>
+
+                <li>
+                  <Link to="/partners" className="hover:opacity-80 transition">
+                    Партнеры
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/vacancies" className="hover:opacity-80 transition">
+                    Вакансии
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/contacts" className="hover:opacity-80 transition">
+                    Обратная связь
+                  </Link>
+                </li>
+
               </ul>
 
             </div>
@@ -55,26 +96,54 @@ export default function Footer() {
 
           {/* SOCIAL ICONS */}
           <div className="flex justify-center lg:justify-end w-full">
+
             <div className="flex gap-3">
 
-              {[globeIcon, phoneIcon, telegramIcon, facebookIcon, linkedinIcon].map(
-                (icon, index) => (
-                  <div
-                    key={index}
-                    className="
-                    w-[32px] h-[32px] lg:w-[38px] lg:h-[38px]
-                    bg-white/20 rounded-md
-                    flex items-center justify-center
-                    hover:bg-white/30
-                    transition cursor-pointer
-                    "
-                  >
-                    <img src={icon} alt="" className="w-[16px] lg:w-[18px]" />
-                  </div>
-                )
-              )}
+              <a
+                href="https://www.google.com/search?q=Czechfarm+Alliance"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-[32px] h-[32px] lg:w-[38px] lg:h-[38px] bg-white/20 rounded-md flex items-center justify-center hover:bg-white/30 transition"
+              >
+                <img src={globeIcon} alt="" className="w-[16px] lg:w-[18px]" />
+              </a>
+
+              <a
+                href="tel:+998946609796"
+                className="w-[32px] h-[32px] lg:w-[38px] lg:h-[38px] bg-white/20 rounded-md flex items-center justify-center hover:bg-white/30 transition"
+              >
+                <img src={phoneIcon} alt="" className="w-[16px] lg:w-[18px]" />
+              </a>
+
+              <a
+                href="https://t.me/HR_CzechfarmAlliance"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-[32px] h-[32px] lg:w-[38px] lg:h-[38px] bg-white/20 rounded-md flex items-center justify-center hover:bg-white/30 transition"
+              >
+                <img src={telegramIcon} alt="" className="w-[16px] lg:w-[18px]" />
+              </a>
+
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-[32px] h-[32px] lg:w-[38px] lg:h-[38px] bg-white/20 rounded-md flex items-center justify-center hover:bg-white/30 transition"
+              >
+                <img src={facebookIcon} alt="" className="w-[16px] lg:w-[18px]" />
+              </a>
+
+              <a
+                href="https://linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-[32px] h-[32px] lg:w-[38px] lg:h-[38px] bg-white/20 rounded-md flex items-center justify-center hover:bg-white/30 transition"
+              >
+                <img src={linkedinIcon} alt="" className="w-[16px] lg:w-[18px]" />
+              </a>
 
             </div>
+
           </div>
 
         </div>

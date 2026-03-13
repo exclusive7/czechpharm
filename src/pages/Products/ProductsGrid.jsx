@@ -1,6 +1,3 @@
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-
 import { useState, useEffect } from "react";
 import nemotan from "../../assets/productimages/Mask group.png";
 import elstar from "../../assets/productimages/Mask group (1).png";
