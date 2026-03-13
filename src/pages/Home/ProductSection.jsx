@@ -1,6 +1,10 @@
 import { useState } from "react";
 import moreInfoBtn from "../../assets/images/BTN.svg";
-import nemotanImg from "../../assets/images/Hemotan.svg";
+const images = import.meta.glob("../../assets/medicines/*", { eager: true });
+
+const getImage = (name) => {
+  return images[`../../assets/medicines/${name}`]?.default;
+};
 
 export default function ProductsSection() {
   const [openId, setOpenId] = useState(null);
@@ -14,159 +18,179 @@ export default function ProductsSection() {
         {
           id: 101,
           name: "Немотан",
+          image: getImage("Hemotan.svg"),
+          description: "Описание препарата Немотан.",
         },
         {
           id: 102,
           name: "Элстекар",
+          image: getImage("image 15.png"),
+          description: "Описание препарата Элстекар.",
         },
         {
           id: 103,
-          name: "Медотон",
+          name: "Мелатонин",
+          image: getImage("Pack.png"),
+          description: "Описание препарата Мелатонин.",
         },
         {
           id: 104,
-          name: "Немотан",
+          name: "Кардон О2",
+          image: getImage("image 12.png"),
+          description: "Описание препарата Кардон О2.",
         },
         {
           id: 105,
-          name: "Немотан",
+          name: "L-Arginin",
+          image: getImage("image 16.png"),
+          description: "Описание препарата L-Arginin.",
         },
         {
           id: 106,
-          name: "Немотан",
+          name: "Эллезиум",
+          image: getImage("Mask group (25).png"),
+          description: "Описание препарата Эллезиум.",
         },
         {
           id: 107,
-          name: "Немотан",
+          name: "Cholesterol Control",
+          image: getImage("image 14.png"),
+          description: "Описание препарата Cholesterol Control.",
         },
         {
           id: 108,
-          name: "Немотан",
+          name: "Канталин микро",
+          image: getImage("Mask group (26).png"),
+          description: "Описание препарата Канталин микро.",
         },
       ],
-      image: nemotanImg,
     },
     {
       id: 2,
-      title: "ОНМК. ХНИК. СОСУДИСТЫЕ ЗАБОЛЕВАНИЯ. ИБС",
+      title:
+        "НЕЙРО-ДЕГЕНЕРАТИВНЫЕ ЗАБОЛЕВАНИЯ ОПОРНО-ДВИГАТЕЛЬНОГО АППАРАТА.СТЕОПОРОЗ",
       medicines: [
         {
           id: 201,
-          name: "Немотан",
+          name: "Арткюр",
+          image: getImage("Pack (1).png"),
+          description: "Описание препарата Арткюр.",
         },
         {
           id: 202,
-          name: "Элстекар",
+          name: "Макстио",
+          image:getImage("Mask group (9).png"),
+          description: "Описание препарата Макстио.",
         },
         {
           id: 203,
-          name: "Медотон",
+          name: "Регапен 75мг, 150мг, 300мг",
+          image: getImage("image 18.png"),
+          description: "Описание препарата Регапен.",
         },
         {
           id: 204,
-          name: "Немотан",
+          name: "Атокса",
+          image: getImage("Mask group (10).png"),
+          description: "Описание препарата Атокса.",
         },
         {
           id: 205,
-          name: "Немотан",
+          name: "Глюкофлекс",
+          image: getImage("Mask group (11).png"),
+          description: "Описание препарата Глюкофлекс.",
         },
         {
           id: 206,
-          name: "Немотан",
+          name: "Тикотен",
+          image: getImage("Mask group (12).png"),
+          description: "Описание препарата Тикотен.",
         },
         {
           id: 207,
-          name: "Немотан",
+          name: "Дексирен",
+          image: getImage("Mask group (13).png"),
+          description: "Описание препарата Дексирен.",
         },
         {
           id: 208,
-          name: "Немотан",
+          name: "Даблпласт",
+          image: getImage("Mask group (14).png"),
+          description: "Описание препарата Даблпласт.",
+        },
+        {
+          id: 209,
+          name: "Ланикзол",
+          image: getImage("Mask group (15).png"),
+          description: "Описание препарата Ланикзол.",
         },
       ],
-      image: nemotanImg,
     },
     {
       id: 3,
-      title: "ОНМК. ХНИК. СОСУДИСТЫЕ ЗАБОЛЕВАНИЯ. ИБС",
+      title: "МЕТАБОЛИЧЕСКИЙ СИНДРОМ. ЖКТ. НИЗКОРОСЛОСТЬ",
       medicines: [
         {
           id: 301,
-          name: "Немотан",
+          name: "Соматоп",
+          image: getImage("Mask group (16).png"),
+          description: "Описание препарата Соматоп.",
         },
         {
           id: 302,
-          name: "Элстекар",
-          description: "Описание препарата Элстекар.",
+          name: "Миотир",
+          image: getImage("Mask group (17).png"),
+          description: "Описание препарата Миотир.",
         },
         {
           id: 303,
-          name: "Медотон",
+          name: "Гепариген",
+          image: getImage("Mask group (18).png"),
+          description: "Описание препарата Гепариген.",
         },
         {
           id: 304,
-          name: "Немотан",
-        },
-        {
-          id: 305,
-          name: "Немотан",
-        },
-        {
-          id: 306,
-          name: "Немотан",
-        },
-        {
-          id: 307,
-          name: "Немотан",
-        },
-        {
-          id: 308,
-          name: "Немотан",
+          name: "Контрифорт",
+          image: getImage("Mask group (19).png"),
+          description: "Описание препарата Контрифорт.",
         },
       ],
-      image: nemotanImg,
     },
     {
       id: 4,
-      title: "ОНМК. ХНИК. СОСУДИСТЫЕ ЗАБОЛЕВАНИЯ. ИБС",
+      title: "ЭРЕКТИЛЬНАЯ ДИСФУНКЦИЯ. БЕСПЛОДИЕ. МКБ",
       medicines: [
         {
           id: 401,
-          name: "Немотан",
-          description:
-            "Описание препарата Немотан. Эффективен при сосудистых заболеваниях.",
+          name: "Зидена",
+          image: getImage("Mask group (20).png"),
+          description: "Описание препарата Зидена.",
         },
         {
           id: 402,
-          name: "Элстекар",
-          description: "Описание препарата Элстекар.",
+          name: "Дуинум",
+          image: getImage("Mask group (21).png"),
+          description: "Описание препарата Дуинум.",
         },
         {
           id: 403,
-          name: "Медотон",
-          description: "Описание препарата Медотон.",
+          name: "Фоллитоп",
+          image: getImage("Mask group (22).png"),
+          description: "Описание препарата Фоллитоп.",
         },
         {
           id: 404,
-          name: "Немотан",
+          name: "Бевласин",
+          image: getImage("Mask group (23).png"),
+          description: "Описание препарата Бевласин.",
         },
         {
           id: 405,
-          name: "Немотан",
-        },
-        {
-          id: 406,
-          name: "Немотан",
-        },
-        {
-          id: 407,
-          name: "Немотан",
-        },
-        {
-          id: 408,
-          name: "Немотан",
+          name: "Реналоф",
+          image: getImage("Mask group (24).png"),
+          description: "Описание препарата Реналоф.",
         },
       ],
-      image: nemotanImg,
     },
   ];
 
@@ -175,7 +199,6 @@ export default function ProductsSection() {
   const handleLoadMore = () => {
     setVisible((prev) => prev + 3);
   };
-
 
   return (
     <section className="py-[80px] lg:py-[140px]">
@@ -205,47 +228,24 @@ export default function ProductsSection() {
                   setOpenId(isOpen ? null : item.id);
                   setActiveMedicine(!isOpen ? item.medicines[0]?.id : null);
                 }}
-                className="
-                w-full
-                flex
-                items-center
-                justify-between
-                py-[24px]
-                hover:bg-gray-50
-                transition
-                "
+                className="w-full flex items-center justify-between py-[24px] hover:bg-gray-50 transition"
               >
-
-                <span className="text-[16px] lg:text-[18px] text-[#1C2561] font-bold text-left">
+                <span className="text-[14px] lg:text-[18px] text-[#1C2561] font-bold text-left">
                   {item.title}
                 </span>
 
-                <span className="text-[24px] font-bold text-[#1C2561]">
+                <span className="text-[18px] lg:text-[24px] font-bold text-[#1C2561]">
                   {openId === item.id ? "−" : "+"}
                 </span>
-
               </button>
 
               {/* CONTENT */}
               {openId === item.id && (
 
-                <div className="
-                flex
-                flex-col
-                lg:flex-row
-                gap-[30px]
-                lg:gap-[120px]
-                items-start
-                pb-[40px]
-                pt-[10px]
-                ">
+                <div className="flex flex-col lg:flex-row gap-[30px] lg:gap-[120px] items-start pb-[40px] pt-[10px]">
 
                   {/* MEDICINES */}
-                  <div className="
-                  w-full
-                  lg:w-[320px]
-                  space-y-2
-                  ">
+                  <div className="w-full lg:w-[320px] space-y-2">
 
                     {item.medicines.map((med) => (
 
@@ -260,7 +260,6 @@ export default function ProductsSection() {
                         transition-all
                         duration-200
                         hover:bg-gray-50
-
                         ${
                           activeMedicine === med.id
                             ? "border-[#F61114] font-bold text-[#1C2561]"
@@ -288,17 +287,8 @@ export default function ProductsSection() {
                           </p>
 
                           <img
-                            src={item.image}
-                            className="
-                            w-[180px]
-                            lg:w-[373px]
-                            mx-auto
-                            lg:mx-0
-                            object-contain
-                            transition
-                            duration-300
-                            hover:scale-105
-                            "
+                            src={med.image}
+                            className="w-[180px] lg:w-[373px] mx-auto lg:mx-0 object-contain transition duration-300 hover:scale-105"
                           />
 
                         </div>
@@ -321,22 +311,12 @@ export default function ProductsSection() {
         {/* LOAD MORE */}
         {visible < productsData.length && (
 
-          <button
-            onClick={handleLoadMore}
-            className="mt-[72px]"
-          >
+          <button onClick={handleLoadMore} className="mt-[72px]">
 
             <img
               src={moreInfoBtn}
               alt="Показать больше"
-              className="
-              w-[200px]
-              lg:w-[220px]
-              cursor-pointer
-              transition
-              duration-300
-              hover:scale-105
-              "
+              className="w-[180px] lg:w-[220px] cursor-pointer transition duration-300 hover:scale-105"
             />
 
           </button>
@@ -347,4 +327,3 @@ export default function ProductsSection() {
     </section>
   );
 }
-
