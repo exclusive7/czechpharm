@@ -23,33 +23,32 @@ export default function Hero() {
 
       {/* PARALLAX BACKGROUND */}
       <div
-        className="hidden lg:block absolute inset-0 bg-cover bg-no-repeat"
+        className="absolute inset-0 bg-cover bg-no-repeat"
         style={{
           backgroundImage: `url(${heroBg})`,
-          transform: `translateY(${offset}px)`
         }}
       />
 
       {/* GRADIENT GLOW */}
-      <div className="absolute w-[700px] h-[700px] bg-blue-400/20 blur-[120px] rounded-full top-[-200px] right-[-200px]"></div>
+      <div className="absolute w-[700px] h-[900px] bg-blue-400/20 blur-[120px] rounded-full top-[-200px] right-[-200px]"></div>
 
-      <div className="min-h-[700px] lg:min-h-[1300px] relative">
+      <div className="min-h-[900px] lg:min-h-[1400px] relative">
 
         {/* WAVE LINES */}
         <img
           src={waveLines}
           alt=""
-          className="hidden lg:block absolute left-0 top-[234px] w-[1583px] z-10"
+          className="absolute left-0 top-[234px] w-[1583px] z-10"
         />
 
         {/* LEFT TEXT */}
-        <div className="relative z-40 text-white text-center pt-[200px] lg:max-w-[540px] lg:pt-[170px] lg:pl-[190px] lg:text-left">
+        <div className="relative z-40 text-white text-center pt-[196px] lg:max-w-[540px] lg:pt-[170px] lg:pl-[190px] lg:text-left">
 
-          <h1 className="text-[28px] font-bold leading-[36px] lg:text-[64px] lg:leading-[72px]">
+          <h1 className="text-[26px] font-bold leading-[36px] lg:text-[64px] lg:leading-[72px]">
             С НАС <br /> НАЧИНАЕТСЯ
           </h1>
 
-          <h2 className="text-[26px] italic font-light mt-1 lg:text-[64px] lg:leading-[68px]">
+          <h2 className="text-[24px] italic font-light mt-1 lg:text-[64px] lg:leading-[68px]">
             ЗДОРОВЬЕ
           </h2>
 
@@ -59,7 +58,7 @@ export default function Hero() {
         <img
           src={ctaSvg}
           alt=""
-          className="absolute z-30 left-[85px] top-[80px] w-[120px] lg:left-[219px] lg:top-[450px] lg:w-[150px] animate-pulse hover:scale-110 transition"
+          className="absolute z-30 left-[90px] top-[80px] w-[120px] lg:left-[219px] lg:top-[450px] lg:w-[150px] animate-pulse hover:scale-110 transition"
         />
 
         {/* GLASS MORPHISM CIRCLE */}
@@ -69,7 +68,7 @@ export default function Hero() {
         <img
           src={bottleCapsules}
           alt=""
-          className="hidden lg:block absolute right-[30px] top-[70px] w-[490px] z-30 animate-float"
+          className="absolute right-[10px] top-[60px] lg:right-[30px] lg:top-[70px] w-[490px] z-30 animate-float"
         />
 
         {/* RIGHT TEXT */}
@@ -83,7 +82,7 @@ export default function Hero() {
         </div>
 
         {/* ABOUT SECTION */}
-        <div className="relative mt-[120px] px-[16px] lg:absolute lg:top-[900px] lg:left-[128px] lg:flex lg:gap-[160px]">
+        <div className="relative mt-[160px] px-[16px] lg:absolute lg:top-[800px] lg:left-[128px] lg:flex lg:gap-[160px]">
 
           <div className="max-w-[560px]">
 
@@ -135,14 +134,14 @@ export default function Hero() {
         </div>
 
         {/* MORE BUTTON */}
-        <div className="relative mt-[40px] px-[16px] lg:absolute lg:top-[1220px] lg:left-[128px]">
+        <div className="relative mt-[40px] lg:mt-[100px]  px-[16px] lg:absolute lg:top-[1220px] lg:left-[128px]">
 
           <button onClick={() => setShowMore(!showMore)}>
 
             <img
               src={moreInfoBtn}
               alt=""
-              className="w-[140px] lg:w-[220px] transition duration-300 hover:scale-110"
+              className="w-[180px] lg:w-[220px] transition duration-300 hover:scale-110"
             />
 
           </button>
