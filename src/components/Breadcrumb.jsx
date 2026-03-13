@@ -3,7 +3,7 @@ import arrow from "../assets/productimages/Arrow 1.png";
 
 export default function Breadcrumb({ items = [] }) {
   return (
-    <div className="flex items-center gap-[6px] text-[12px] sm:text-[14px] text-black/70 overflow-x-auto whitespace-nowrap breadcrumb-scroll">
+    <div className="flex items-center gap-[6px] text-[14px] sm:text-[14px] text-black/70 overflow-x-auto whitespace-nowrap breadcrumb-scroll">
 
       {/* HOME */}
       <Link

@@ -440,7 +440,6 @@ export default function ProductsGrid({
   letter = "",
   category = "",
 }) {
-
   const [activeId, setActiveId] = useState(null);
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(8);
@@ -474,123 +473,78 @@ export default function ProductsGrid({
   const paginatedProducts = filteredProducts.slice(startIndex, endIndex);
 
   return (
-  <div className="px-[16px]">
+    <div className="px-[16px]">
+      <div className="flex flex-wrap gap-[20px]">
+        {paginatedProducts.length > 0 ? (
+          paginatedProducts.map((p) => (
+            <div
+              key={p.id}
+              onClick={() => setActiveId(p.id)}
+              className={`relative bg-white rounded-[14px] pt-[32px] pl-[32px] pb-[70px] pr-[30px] cursor-pointer transition
+              ${
+                activeId === p.id
+                  ? "border border-[#8D91AF] shadow-[2px_2px_20px_rgba(0,0,0,0.25)]"
+                  : "border border-[#E3E7EF]"
+              }`}
+            >
+              <img
+                src={p.image}
+                alt={p.name}
+                className="w-[255px] h-[200px] lg:h-[255px] mb-[10px] lg:mb-[20px] object-contain"
+              />
 
-    {/* MOBILE SLIDER */}
-    <div className="lg:hidden w-[280px]">
-      {paginatedProducts.length > 0 ? (
-        <Swiper spaceBetween={20} slidesPerView={"auto"}>
-          {paginatedProducts.map((p) => (
-            <SwiperSlide key={p.id} className="!w-[280px]">
-              <div
-                onClick={() => setActiveId(p.id)}
-                className={`bg-white rounded-[14px] pt-[32px] pl-[32px] pb-[70px] pr-[30px] cursor-pointer transition
-                ${
-                  activeId === p.id
-                    ? "border border-[#8D91AF] shadow-[2px_2px_20px_rgba(0,0,0,0.25)]"
-                    : "border border-[#E3E7EF]"
-                }`}
-              >
+              <h3 className="text-[#16226C] font-bold text-[20px] lg:text-[24px] leading-[160%] mb-[16px]">
+                {p.name}
+              </h3>
 
-                <img
-                  src={p.image}
-                  alt={p.name}
-                  className="w-[255px] h-[255px] mb-[20px] object-contain"
-                />
-
-                <h3 className="text-[#16226C] font-bold text-[24px] leading-[160%] mb-[16px]">
-                  {p.name}
-                </h3>
-
-                <div className="text-[12px] text-black/70 leading-[160%]">
-                  {p.desc.map((item, i) => (
-                    <p key={i}>
-                      {item.label}{" "}
-                      <span className="font-bold text-black">
-                        {item.value}
-                      </span>
-                    </p>
-                  ))}
-                </div>
-
-                {activeId === p.id && (
-                  <img
-                    src={cornerShape}
-                    alt=""
-                    className="absolute bottom-0 right-0 w-[120px]"
-                  />
-                )}
-
+              <div className="text-[12px] text-black/70 leading-[160%]">
+                {p.desc.map((item, i) => (
+                  <p key={i}>
+                    {item.label}{" "}
+                    <span className="font-bold text-black">{item.value}</span>
+                  </p>
+                ))}
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      ) : (
-        <div className="text-gray-400 text-[18px] mt-[40px]">
-          Препарат не найден
+
+              {activeId === p.id && (
+                <img
+                  src={cornerShape}
+                  alt=""
+                  className="absolute bottom-0 right-0 w-[120px]"
+                />
+              )}
+            </div>
+          ))
+        ) : (
+          <div className="text-gray-400 text-[18px] mt-[40px]">
+            Препарат не найден
+          </div>
+        )}
+      </div>{" "}
+      {/* SHOW MORE */}
+      {perPage < filteredProducts.length && (
+        <div className="text-center mt-[40px]">
+          <button
+            onClick={handleShowMore}
+            className="text-[#1C2561] font-bold text-[12px] lg:text-[16px] hover:text-red-600 transition"
+          >
+            Показать больше ↓
+          </button>
         </div>
       )}
-    </div>
-
-
-    {/* DESKTOP GRID */}
-    <div className="hidden lg:flex flex-wrap gap-[30px]">
-      {paginatedProducts.map((p) => (
-        <div
-          key={p.id}
-          onClick={() => setActiveId(p.id)}
-          className="relative bg-white rounded-[14px] pt-[32px] pl-[32px] pb-[70px] pr-[30px] cursor-pointer transition border border-[#E3E7EF]"
-        >
-          <img
-            src={p.image}
-            alt={p.name}
-            className="w-[255px] h-[255px] mb-[20px] object-contain"
-          />
-
-          <h3 className="text-[#16226C] font-bold text-[24px] leading-[160%] mb-[16px]">
-            {p.name}
-          </h3>
-
-          <div className="text-[12px] text-black/70 leading-[160%]">
-            {p.desc.map((item, i) => (
-              <p key={i}>
-                {item.label}{" "}
-                <span className="font-bold text-black">{item.value}</span>
-              </p>
-            ))}
-          </div>
-        </div>
-      ))}
-    </div>
-
-
-    {/* SHOW MORE */}
-    {perPage < filteredProducts.length && (
-      <div className="text-center mt-[40px]">
-        <button
-          onClick={handleShowMore}
-          className="text-[#1C2561] font-bold text-[12px] lg:text-[16px] hover:text-red-600 transition"
-        >
-          Показать больше ↓
-        </button>
-      </div>
-    )}
-
-
-    {/* PAGINATION */}
-    <div className="flex justify-center items-center gap-[18px] mt-[36px]">
-      {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-        <button
-          key={p}
-          onClick={() => setPage(p)}
-          className={`w-[25px] h-[25px] lg:w-[35px] lg:h-[35px] flex items-center justify-center rounded-full text-[12px] font-bold
+      {/* PAGINATION */}
+      <div className="flex justify-center items-center gap-[18px] mt-[36px]">
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+          <button
+            key={p}
+            onClick={() => setPage(p)}
+            className={`w-[25px] h-[25px] lg:w-[35px] lg:h-[35px] flex items-center justify-center rounded-full text-[12px] font-bold
           ${page === p ? "bg-red-600 text-white" : "text-[#97A2A9]"}`}
-        >
-          {p}
-        </button>
-      ))}
+          >
+            {p}
+          </button>
+        ))}
+      </div>
     </div>
-
-  </div>
-);
+  );
 }

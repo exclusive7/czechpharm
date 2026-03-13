@@ -35,7 +35,7 @@ export default function Products() {
 
       <button
         onClick={() => setOpenSidebar(true)}
-        className="lg:hidden flex items-center gap-[8px] border border-[#D7DEEA] rounded-[10px] px-[14px] py-[10px] text-[#1C2561] mt-[80px] bg-white shadow-sm hover:shadow-md transition"
+        className="lg:hidden flex items-center gap-[8px] border border-[#D7DEEA] rounded-[10px] px-[14px] py-[10px] text-[#1C2561] mt-[40px] ml-[12px] bg-white shadow-sm hover:shadow-md transition"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ export default function Products() {
         <span className="text-[14px] font-semibold">Фильтр</span>
       </button>
 
-      <section className="py-[60px]">
+      <section className="py-[40px] lg:py-[60px]">
         <div className="flex gap-[30px]">
           {/* SIDEBAR */}
           <div
