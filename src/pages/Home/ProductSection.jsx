@@ -79,7 +79,7 @@ export default function ProductsSection() {
         {
           id: 202,
           name: "Макстио",
-          image:getImage("Mask group (9).png"),
+          image: getImage("Mask group (9).png"),
           description: "Описание препарата Макстио.",
         },
         {
