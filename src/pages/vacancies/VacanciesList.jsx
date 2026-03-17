@@ -2,166 +2,82 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import locationIcon from "../../assets/vacansyimages/Mask group (6).svg";
 import dateIcon from "../../assets/vacansyimages/Mask group (7).svg";
-
-const vacancies = [
-  {
-    id: 1,
-    title: "Медицинский представитель",
-    location: "Ташкент, Узбекистан",
-    date: "23.10.2023",
-    slug: "medical-representative",
-  },
-  {
-    id: 2,
-    title: "Продакт менеджер",
-    location: "Ташкент, Узбекистан",
-    date: "23.10.2023",
-    slug: "product-manager",
-  },
-  {
-    id: 3,
-    title: "Офис менеджер",
-    location: "Ташкент, Узбекистан",
-    date: "23.10.2023",
-    slug: "office-manager",
-  },
-  {
-    id: 4,
-    title: "Офис менеджер-2",
-    location: "Ташкент, Узбекистан",
-    date: "23.10.2023",
-    slug: "office-manager-2",
-  },
-  {
-    id: 5,
-    title: "HR менеджер",
-    location: "Ташкент, Узбекистан",
-    date: "23.10.2023",
-    slug: "hr-manager",
-  },
-];
+import { useVacancies } from "../../hooks/useVacancies";
 
 export default function VacanciesList() {
+  const { vacancies, loading, error } = useVacancies();
   const [visible, setVisible] = useState(4);
 
-  const handleLoadMore = () => {
-    setVisible((prev) => prev + 2);
-  };
-
   return (
-    <section className="pb-[70px] lg:pb-[90px] pt-[50px] lg:pt-[72px] bg-[#F8F9FC]">
+    <section className="bg-[#F8F9FC] pb-[70px] pt-[50px] lg:pb-[90px] lg:pt-[72px]">
       <div className="container-custom">
+        {loading ? (
+          <div className="rounded-[18px] bg-white px-5 py-4 text-sm text-[#4A5676]">
+            Загрузка вакансий...
+          </div>
+        ) : null}
 
-        <div className="flex flex-col gap-[25px] lg:gap-[45px]">
+        {error ? (
+          <div className="rounded-[18px] border border-[#F1C9CC] bg-[#FFF1F2] px-5 py-4 text-sm text-[#A32024]">
+            {error}
+          </div>
+        ) : null}
 
-          {vacancies.slice(0, visible).map((item) => (
+        {!loading && !error ? (
+          <div className="flex flex-col gap-[25px] lg:gap-[45px]">
+            {vacancies.slice(0, visible).map((item) => (
+              <Link
+                key={item.id}
+                to={`/vacancies/${item.slug}`}
+                className="rounded-[12px] border border-[#D9DDE7] bg-white p-[20px] transition duration-300 hover:-translate-y-1 hover:shadow-xl lg:py-[30px] lg:pl-[30px]"
+              >
+                <h3 className="mb-[16px] text-[18px] font-bold leading-[150%] text-black/80 lg:mb-[24px] lg:text-[24px]">
+                  {item.title}
+                </h3>
 
-            <Link
-              key={item.id}
-              to={`/vacancies/${item.slug}`}
-              className="
-              bg-white
-              rounded-[12px]
-              border border-[#D9DDE7]
-              p-[20px]
-              lg:py-[30px]
-              lg:pl-[30px]
-              hover:shadow-xl
-              hover:-translate-y-1
-              transition
-              duration-300
-              "
-            >
+                <div className="flex flex-col gap-[12px] sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex items-center gap-[8px] text-[14px] text-black/70 lg:text-[16px]">
+                    <img
+                      src={locationIcon}
+                      alt=""
+                      className="w-[28px] lg:w-[40px]"
+                    />
+                    {item.location}
+                  </div>
 
-              {/* TITLE */}
-              <h3 className="
-              text-[18px]
-              lg:text-[24px]
-              font-bold
-              text-black/80
-              leading-[150%]
-              mb-[16px]
-              lg:mb-[24px]
-              ">
-                {item.title}
-              </h3>
-
-
-              {/* INFO */}
-              <div className="
-              flex
-              flex-col
-              sm:flex-row
-              sm:justify-between
-              sm:items-center
-              gap-[12px]
-              ">
-
-                {/* LOCATION */}
-                <div className="flex items-center gap-[8px] text-black/70 text-[14px] lg:text-[16px]">
-
-                  <img
-                    src={locationIcon}
-                    alt=""
-                    className="w-[28px] lg:w-[40px]"
-                  />
-
-                  {item.location}
-
+                  <div className="flex items-center gap-[8px] text-[14px] text-black/80 lg:text-[16px]">
+                    <img
+                      src={dateIcon}
+                      alt=""
+                      className="w-[28px] lg:w-[40px]"
+                    />
+                    {item.date}
+                  </div>
                 </div>
+              </Link>
+            ))}
+          </div>
+        ) : null}
 
+        {!loading && !error && vacancies.length === 0 ? (
+          <div className="rounded-[18px] border border-dashed border-[#D8DEEA] p-5 text-sm text-[#6C7485]">
+            Вакансии пока не добавлены.
+          </div>
+        ) : null}
 
-                {/* DATE */}
-                <div className="flex items-center gap-[8px] text-black/80 text-[14px] lg:text-[16px]">
-
-                  <img
-                    src={dateIcon}
-                    alt=""
-                    className="w-[28px] lg:w-[40px]"
-                  />
-
-                  {item.date}
-
-                </div>
-
-              </div>
-
-            </Link>
-
-          ))}
-
-        </div>
-
-
-        {/* LOAD MORE */}
-        {visible < vacancies.length && (
-
-          <div className="flex justify-center mt-[50px] lg:mt-[60px]">
-
+        {!loading && !error && visible < vacancies.length ? (
+          <div className="mt-[50px] flex justify-center lg:mt-[60px]">
             <button
-              onClick={handleLoadMore}
-              className="
-              text-[#1C2561]
-              font-bold
-              flex
-              items-center
-              gap-[10px]
-              cursor-pointer
-              hover:gap-[16px]
-              transition
-              duration-300
-              "
+              type="button"
+              onClick={() => setVisible((prev) => prev + 2)}
+              className="flex cursor-pointer items-center gap-[10px] font-bold text-[#1C2561] transition duration-300 hover:gap-[16px]"
             >
               Показать больше
               <span className="text-[22px]">↓</span>
             </button>
-
           </div>
-
-        )}
-
+        ) : null}
       </div>
     </section>
   );
 }
-

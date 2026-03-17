@@ -1,105 +1,111 @@
-import { useState } from "react"
-import formImg from "../../assets/contactimages/doctor-working-laptop_1098-19721 1.png"
-import plusIcon from "../../assets/contactimages/BTN-round-konsultacia.svg"
+import { useState } from "react";
+import formImg from "../../assets/contactimages/doctor-working-laptop_1098-19721 1.png";
+import { submitContactRequest } from "../../data/contactSettingsStore";
 
 export default function ContactForm() {
-
   const [formData, setFormData] = useState({
     name: "",
+    phone: "",
     email: "",
-    question: ""
-  })
+    question: "",
+  });
 
-  const [errors, setErrors] = useState({})
-  const [success, setSuccess] = useState(false)
+  const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
+  const handleChange = (event) => {
+    setFormData((current) => ({
+      ...current,
+      [event.target.name]: event.target.value,
+    }));
+  };
 
   const validate = () => {
-
-    const newErrors = {}
+    const nextErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Имя обязательно"
+      nextErrors.name = "Имя обязательно";
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email обязательно"
+    if (!formData.phone.trim() && !formData.email.trim()) {
+      nextErrors.phone = "Укажите телефон или email";
+      nextErrors.email = "Укажите телефон или email";
     }
 
-    return newErrors
-  }
+    return nextErrors;
+  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-    e.preventDefault()
-
-    const validationErrors = validate()
+    const validationErrors = validate();
 
     if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors)
-      return
+      setErrors(validationErrors);
+      return;
     }
 
-    setErrors({})
-    setSuccess(true)
+    setSubmitting(true);
+    setErrors({});
+    setSubmitError("");
 
-    setFormData({
-      name: "",
-      email: "",
-      question: ""
-    })
+    try {
+      await submitContactRequest(formData);
+      setSuccess(true);
 
-    setTimeout(() => {
-      setSuccess(false)
-    }, 4000)
-  }
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        question: "",
+      });
+
+      window.setTimeout(() => {
+        setSuccess(false);
+      }, 4000);
+    } catch (error) {
+      setSubmitError(error.message || "Не удалось отправить форму");
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <section className="py-[60px] md:py-[100px] lg:py-[180px]">
       <div className="container-custom">
-
-        {/* HEADER */}
-        <div className="flex flex-col lg:flex-row lg:justify-between gap-6 mb-[40px] lg:mb-[56px]">
-
+        <div className="mb-[40px] flex flex-col gap-6 lg:mb-[56px] lg:flex-row lg:justify-between">
           <div>
-            <h2 className="text-[28px] sm:text-[32px] lg:text-[48px] italic text-[#1C2561] uppercase">
+            <h2 className="text-[28px] uppercase italic text-[#1C2561] sm:text-[32px] lg:text-[48px]">
               ФОРМА <span className="font-bold not-italic">ОБРАТНОЙ</span>
             </h2>
 
-            <h2 className="text-[28px] sm:text-[32px] lg:text-[48px] font-bold text-[#F61114] uppercase">
+            <h2 className="text-[28px] font-bold uppercase text-[#F61114] sm:text-[32px] lg:text-[48px]">
               СВЯЗИ
             </h2>
           </div>
 
-          <p className="text-[14px] lg:text-[16px] text-black/70 max-w-[443px] leading-[20px]">
+          <p className="max-w-[443px] text-[14px] leading-[20px] text-black/70 lg:text-[16px]">
             С удовольствием проконсультируем Вас по любым интересующим вопросам
           </p>
-
         </div>
 
-
-        {/* SUCCESS MESSAGE */}
-        {success && (
-          <div className="mb-[30px] p-[20px] bg-green-100 text-green-700 rounded-lg text-center animate-pulse">
+        {success ? (
+          <div className="mb-[30px] rounded-lg bg-green-100 p-[20px] text-center text-green-700">
             Спасибо! Мы скоро свяжемся с вами
           </div>
-        )}
+        ) : null}
 
+        {submitError ? (
+          <div className="mb-[30px] rounded-lg bg-red-100 p-[20px] text-center text-red-700">
+            {submitError}
+          </div>
+        ) : null}
 
-        {/* CONTENT */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[60px] lg:gap-[220px] items-start">
-
-          {/* FORM */}
+        <div className="grid grid-cols-1 items-start gap-[60px] lg:grid-cols-2 lg:gap-[220px]">
           <div>
-
             <form onSubmit={handleSubmit} className="space-y-[20px] lg:space-y-[24px]">
-
               <div>
                 <input
                   type="text"
@@ -107,21 +113,32 @@ export default function ContactForm() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Имя"
-                  className="placeholder:text-[#A5A5A5] w-full lg:w-[540px] 
-                  h-[40px] lg:h-[44px] 
-                  text-[14px] lg:text-[16px] 
-                  px-3 lg:px-4 
-                  rounded-[6px] border border-[#A5A5A5] bg-white 
-                  focus:outline-none focus:border-[#1C2561]"
+                  className="h-[40px] w-full rounded-[6px] border border-[#A5A5A5] bg-white px-3 text-[14px] placeholder:text-[#A5A5A5] focus:border-[#1C2561] focus:outline-none lg:h-[44px] lg:w-[540px] lg:px-4 lg:text-[16px]"
                 />
 
-                {errors.name && (
-                  <p className="text-red-500 text-[13px] lg:text-[14px] mt-1">
+                {errors.name ? (
+                  <p className="mt-1 text-[13px] text-red-500 lg:text-[14px]">
                     {errors.name}
                   </p>
-                )}
+                ) : null}
               </div>
 
+              <div>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Телефон"
+                  className="h-[40px] w-full rounded-[6px] border border-[#A5A5A5] bg-white px-3 text-[14px] placeholder:text-[#A5A5A5] focus:border-[#1C2561] focus:outline-none lg:h-[44px] lg:w-[540px] lg:px-4 lg:text-[16px]"
+                />
+
+                {errors.phone ? (
+                  <p className="mt-1 text-[13px] text-red-500 lg:text-[14px]">
+                    {errors.phone}
+                  </p>
+                ) : null}
+              </div>
 
               <div>
                 <input
@@ -130,21 +147,15 @@ export default function ContactForm() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="E-mail"
-                  className="placeholder:text-[#A5A5A5] w-full lg:w-[540px] 
-                  h-[40px] lg:h-[44px] 
-                  text-[14px] lg:text-[16px] 
-                  px-3 lg:px-4 
-                  rounded-[6px] border border-[#A5A5A5] bg-white 
-                  focus:outline-none focus:border-[#1C2561]"
+                  className="h-[40px] w-full rounded-[6px] border border-[#A5A5A5] bg-white px-3 text-[14px] placeholder:text-[#A5A5A5] focus:border-[#1C2561] focus:outline-none lg:h-[44px] lg:w-[540px] lg:px-4 lg:text-[16px]"
                 />
 
-                {errors.email && (
-                  <p className="text-red-500 text-[13px] lg:text-[14px] mt-1">
+                {errors.email ? (
+                  <p className="mt-1 text-[13px] text-red-500 lg:text-[14px]">
                     {errors.email}
                   </p>
-                )}
+                ) : null}
               </div>
-
 
               <textarea
                 name="question"
@@ -152,44 +163,34 @@ export default function ContactForm() {
                 onChange={handleChange}
                 placeholder="Ваш вопрос"
                 rows="4"
-                className="placeholder:text-[#A5A5A5] w-full lg:w-[540px] 
-                text-[14px] lg:text-[16px] 
-                px-3 lg:px-4 
-                py-2 lg:py-3 
-                rounded-[6px] border border-[#A5A5A5] bg-white 
-                resize-none focus:outline-none focus:border-[#1C2561]"
+                className="w-full resize-none rounded-[6px] border border-[#A5A5A5] bg-white px-3 py-2 text-[14px] placeholder:text-[#A5A5A5] focus:border-[#1C2561] focus:outline-none lg:w-[540px] lg:px-4 lg:py-3 lg:text-[16px]"
               />
 
-
-              {/* BUTTON */}
-              <div className="mt-[30px] lg:mt-[48px] flex justify-center lg:justify-start">
-                <button type="submit">
-                  <img
-                    src={plusIcon}
-                    alt="Заказать консультацию"
-                    className="w-[130px] lg:w-[150px] cursor-pointer transition duration-300 hover:scale-105"
-                  />
+              <div className="mt-[30px] flex justify-center lg:mt-[48px] lg:justify-start">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className={`inline-flex min-h-[52px] min-w-[220px] items-center justify-center rounded-full bg-[#F61114] px-8 py-3 text-base font-semibold text-white transition ${
+                    submitting
+                      ? "cursor-not-allowed opacity-60"
+                      : "hover:bg-[#d90f12]"
+                  }`}
+                >
+                  {submitting ? "Отправка..." : "Отправить"}
                 </button>
               </div>
-
             </form>
-
           </div>
 
-
-          {/* IMAGE */}
           <div className="flex justify-center lg:justify-end">
             <img
               src={formImg}
               alt=""
-              className="w-full max-w-[445px] h-auto lg:h-[489px] object-cover rounded-[12px]"
+              className="h-auto w-full max-w-[445px] rounded-[12px] object-cover lg:h-[489px]"
             />
           </div>
-
         </div>
-
       </div>
     </section>
-  )
+  );
 }
-

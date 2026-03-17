@@ -4,22 +4,22 @@ import ProductsHero from "./ProductsHero";
 import Breadcrumb from "../../components/Breadcrumb";
 import ProductsSidebar from "./ProductsSidebar";
 import ProductsGrid from "./ProductsGrid";
+import { useProducts } from "../../hooks/useProducts";
+import { useSiteContent } from "../../hooks/useSiteContent";
+import {
+  buildCategoryOptions,
+  getCategoryTitle,
+} from "../../data/siteContentStore";
 
 export default function Products() {
   const [openSidebar, setOpenSidebar] = useState(false);
   const [search, setSearch] = useState("");
   const [letter, setLetter] = useState("");
   const { category } = useParams();
+  const { products, loading, error } = useProducts();
+  const { siteContent } = useSiteContent();
+  const categoryOptions = buildCategoryOptions(siteContent.categories);
 
-  const categoryTitles = {
-    all: "ВСЕ",
-    new: "НОВИНКИ",
-    vascular: "ОНМК. ХНИК. СОСУДИСТЫЕ ЗАБОЛЕВАНИЯ. ИБС",
-    neuro:
-      "НЕЙРО-ДЕГЕНЕРАТИВНЫЕ ЗАБОЛЕВАНИЯ ОПОРНО-ДВИГАТЕЛЬНОГО АППАРАТА. ОСТЕОПОРОЗ",
-    metabolic: "МЕТАБОЛИЧЕСКИЙ СИНДРОМ. ЖКТ. НИЗКОРОСЛОСТЬ",
-    erectile: "ЭРЕКТИЛЬНАЯ ДИСФУНКЦИЯ. БЕСПЛОДИЕ. МКБ",
-  };
 
   return (
     <>
@@ -28,7 +28,9 @@ export default function Products() {
         <Breadcrumb
           items={[
             { label: "Препараты", link: "/products" },
-            ...(category ? [{ label: categoryTitles[category] }] : []),
+            ...(category
+              ? [{ label: getCategoryTitle(category, siteContent.categories) }]
+              : []),
           ]}
         />
       </div>
@@ -67,6 +69,8 @@ lg:relative lg:translate-x-0
 `}
           >
             <ProductsSidebar
+              categories={categoryOptions}
+              products={products}
               search={search}
               setSearch={setSearch}
               setLetter={setLetter}
@@ -76,7 +80,14 @@ lg:relative lg:translate-x-0
 
           {/* PRODUCTS GRID */}
 
-          <ProductsGrid search={search} letter={letter} category={category} />
+          <ProductsGrid
+            products={products}
+            loading={loading}
+            error={error}
+            search={search}
+            letter={letter}
+            category={category}
+          />
         </div>
       </section>
     </>

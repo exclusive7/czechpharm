@@ -1,44 +1,43 @@
 import { useState } from "react";
 import contactImg from "../../assets/images/doctor-working-laptop_1098-19721 1.png";
-import consultBtn from "../../assets/images/BTN-round-konsultacia.svg";
+import { submitContactRequest } from "../../data/contactSettingsStore";
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
     name: "",
+    phone: "",
     email: "",
     question: "",
   });
-
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleChange = (event) => {
+    setFormData((current) => ({
+      ...current,
+      [event.target.name]: event.target.value,
+    }));
   };
 
-  // Email regex validation
   const validate = () => {
-    const newErrors = {};
+    const nextErrors = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = "Имя обязательно";
+      nextErrors.name = "Имя обязательно";
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email обязательно";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Введите корректный email";
+    if (!formData.phone.trim() && !formData.email.trim()) {
+      nextErrors.phone = "Укажите телефон или email";
+      nextErrors.email = "Укажите телефон или email";
     }
 
-    return newErrors;
+    return nextErrors;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     const validationErrors = validate();
 
@@ -48,58 +47,63 @@ export default function ContactSection() {
     }
 
     setErrors({});
-    setLoading(true);
+    setSubmitError("");
+    setSubmitting(true);
 
-    // Fake API request (2 sec)
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await submitContactRequest(formData);
       setSuccess(true);
-
       setFormData({
         name: "",
+        phone: "",
         email: "",
         question: "",
       });
 
-      setTimeout(() => {
+      window.setTimeout(() => {
         setSuccess(false);
       }, 4000);
-    }, 2000);
+    } catch (error) {
+      setSubmitError(error.message || "Не удалось отправить форму");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <section className="py-[80px] lg:py-[180px]">
       <div className="container-custom">
-        {/* HEADER */}
-        <div className="flex flex-col lg:flex-row gap-[30px] lg:justify-between mb-[40px] lg:mb-[56px]">
+        <div className="mb-[40px] flex flex-col gap-[30px] lg:mb-[56px] lg:flex-row lg:justify-between">
           <div>
-            <h2 className="text-[28px] lg:text-[48px] italic text-[#1C2561] uppercase">
+            <h2 className="text-[28px] italic uppercase text-[#1C2561] lg:text-[48px]">
               ФОРМА <span className="font-bold not-italic">ОБРАТНОЙ</span>
             </h2>
 
-            <h2 className="text-[28px] lg:text-[48px] font-bold text-[#F61114] uppercase">
+            <h2 className="text-[28px] font-bold uppercase text-[#F61114] lg:text-[48px]">
               СВЯЗИ
             </h2>
           </div>
 
-          <p className="text-[14px] lg:text-[16px] text-black/70 max-w-[443px] leading-[20px]">
+          <p className="max-w-[443px] text-[14px] leading-[20px] text-black/70 lg:text-[16px]">
             С удовольствием проконсультируем Вас по любым интересующим вопросам
           </p>
         </div>
 
-        {/* SUCCESS MESSAGE */}
-        {success && (
-          <div className="mb-[30px] p-[20px] bg-green-100 text-green-700 rounded-lg text-center animate-pulse">
+        {success ? (
+          <div className="mb-[30px] rounded-lg bg-green-100 p-[20px] text-center text-green-700">
             Спасибо! Мы скоро свяжемся с вами
           </div>
-        )}
+        ) : null}
 
-        {/* CONTENT */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[40px] lg:gap-[220px] items-start">
-          {/* FORM */}
+        {submitError ? (
+          <div className="mb-[30px] rounded-lg bg-red-100 p-[20px] text-center text-red-700">
+            {submitError}
+          </div>
+        ) : null}
+
+        <div className="grid grid-cols-1 items-start gap-[40px] lg:grid-cols-2 lg:gap-[220px]">
           <div>
             <form onSubmit={handleSubmit} className="space-y-[20px] lg:space-y-[24px]">
-              {/* NAME */}
               <div>
                 <input
                   type="text"
@@ -107,15 +111,27 @@ export default function ContactSection() {
                   value={formData.name}
                   onChange={handleChange}
                   placeholder="Имя"
-                  className="placeholder:text-[#A5A5A5] w-full lg:w-[540px] h-[44px] px-4 rounded-[6px] border border-[#A5A5A5] bg-white focus:outline-none focus:border-[#1C2561]"
+                  className="h-[44px] w-full rounded-[6px] border border-[#A5A5A5] bg-white px-4 placeholder:text-[#A5A5A5] focus:border-[#1C2561] focus:outline-none lg:w-[540px]"
                 />
-
-                {errors.name && (
-                  <p className="text-red-500 text-[14px] mt-1">{errors.name}</p>
-                )}
+                {errors.name ? (
+                  <p className="mt-1 text-[14px] text-red-500">{errors.name}</p>
+                ) : null}
               </div>
 
-              {/* EMAIL */}
+              <div>
+                <input
+                  type="tel"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  placeholder="Телефон"
+                  className="h-[44px] w-full rounded-[6px] border border-[#A5A5A5] bg-white px-4 placeholder:text-[#A5A5A5] focus:border-[#1C2561] focus:outline-none lg:w-[540px]"
+                />
+                {errors.phone ? (
+                  <p className="mt-1 text-[14px] text-red-500">{errors.phone}</p>
+                ) : null}
+              </div>
+
               <div>
                 <input
                   type="email"
@@ -123,51 +139,43 @@ export default function ContactSection() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="E-mail"
-                  className="placeholder:text-[#A5A5A5] w-full lg:w-[540px] h-[44px] px-4 rounded-[6px] border border-[#A5A5A5] bg-white focus:outline-none focus:border-[#1C2561]"
+                  className="h-[44px] w-full rounded-[6px] border border-[#A5A5A5] bg-white px-4 placeholder:text-[#A5A5A5] focus:border-[#1C2561] focus:outline-none lg:w-[540px]"
                 />
-
-                {errors.email && (
-                  <p className="text-red-500 text-[14px] mt-1">{errors.email}</p>
-                )}
+                {errors.email ? (
+                  <p className="mt-1 text-[14px] text-red-500">{errors.email}</p>
+                ) : null}
               </div>
 
-              {/* QUESTION */}
               <textarea
                 name="question"
                 value={formData.question}
                 onChange={handleChange}
                 placeholder="Ваш вопрос"
                 rows="4"
-                className="placeholder:text-[#A5A5A5] w-full lg:w-[540px] px-4 py-3 rounded-[6px] border border-[#A5A5A5] bg-white resize-none focus:outline-none focus:border-[#1C2561]"
+                className="w-full rounded-[6px] border border-[#A5A5A5] bg-white px-4 py-3 placeholder:text-[#A5A5A5] focus:border-[#1C2561] focus:outline-none lg:w-[540px]"
               />
 
-              {/* BUTTON */}
-              <div className="mt-[30px] lg:mt-[48px] flex justify-center lg:justify-start">
+              <div className="mt-[30px] flex justify-center lg:mt-[48px] lg:justify-start">
                 <button
                   type="submit"
-                  disabled={loading}
-                  className="relative flex items-center justify-center"
+                  disabled={submitting}
+                  className={`inline-flex min-h-[52px] min-w-[220px] items-center justify-center rounded-full bg-[#F61114] px-8 py-3 text-base font-semibold text-white transition ${
+                    submitting
+                      ? "cursor-not-allowed opacity-60"
+                      : "hover:bg-[#d90f12]"
+                  }`}
                 >
-                  {loading ? (
-                    <div className="w-[40px] h-[40px] border-4 border-[#1C2561] border-t-transparent rounded-full animate-spin"></div>
-                  ) : (
-                    <img
-                      src={consultBtn}
-                      alt="Заказать консультацию"
-                      className="w-[130px] lg:w-[150px] cursor-pointer transition duration-300 hover:scale-105"
-                    />
-                  )}
+                  {submitting ? "Отправка..." : "Отправить"}
                 </button>
               </div>
             </form>
           </div>
 
-          {/* IMAGE */}
           <div className="flex justify-center lg:justify-end">
             <img
               src={contactImg}
               alt="doctor"
-              className="w-full max-w-[360px] lg:max-w-[445px] h-auto object-cover rounded-[12px]"
+              className="h-auto w-full max-w-[360px] rounded-[12px] object-cover lg:max-w-[445px]"
             />
           </div>
         </div>

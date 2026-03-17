@@ -1,75 +1,16 @@
 import { useState } from "react";
-import img1 from "../../assets/libraryimages/books-and-stethoscope_1150-18056 1.png";
-import img2 from "../../assets/libraryimages/portrait-of-a-doctor_144627-39401 1.png";
-import img3 from "../../assets/libraryimages/stacked-books-pencil-and-stethoscope-on-white-surface_23-2147941812 1.png";
 import searchIcon from "../../assets/libraryimages/Search.svg";
 import findBtn from "../../assets/libraryimages/BTN (2).svg";
 import pdfIcon from "../../assets/libraryimages/free-icon-pdf-3997608 1.svg";
-import pdf1 from "../../assets/libraryimages/Gulmira_Ilyasova_CV.pdf";
-
-const articles = [
-  {
-    id: 1,
-    image: img3,
-    title: "ЭРЕКТИЛЬНАЯ ДИСФУНКЦИЯ. БЕСПЛОДИЕ. МКБ",
-    pdf: pdf1,
-    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore.",
-  },
-  {
-    id: 2,
-    image: img2,
-    title: "МЕТАБОЛИЧЕСКИЙ СИНДРОМ. ЖКТ",
-    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore.",
-  },
-  {
-    id: 3,
-    image: img1,
-    title: "ЭРЕКТИЛЬНАЯ ДИСФУНКЦИЯ",
-    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore.",
-  },
-  {
-    id: 4,
-    image: img3,
-    title: "ЭРЕКТИЛЬНАЯ ДИСФУНКЦИЯ",
-    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore.",
-  },
-  {
-    id: 5,
-    image: img2,
-    title: "МЕТАБОЛИЧЕСКИЙ СИНДРОМ",
-    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore.",
-  },
-  {
-    id: 6,
-    image: img1,
-    title: "ЭРЕКТИЛЬНАЯ ДИСФУНКЦИЯ",
-    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore.",
-  },
-  {
-    id: 7,
-    image: img3,
-    title: "ЭРЕКТИЛЬНАЯ ДИСФУНКЦИЯ",
-    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore.",
-  },
-  {
-    id: 8,
-    image: img2,
-    title: "МЕТАБОЛИЧЕСКИЙ СИНДРОМ",
-    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore.",
-  },
-  {
-    id: 9,
-    image: img1,
-    title: "ЭРЕКТИЛЬНАЯ ДИСФУНКЦИЯ",
-    text: "Lorem ipsum dolor sit amet, consectetur elit, sed do eiusmod tempor incididunt ut labore.",
-  },
-];
+import { resolveLibraryAsset } from "../../data/libraryStore";
+import { useLibraryItems } from "../../hooks/useLibraryItems";
 
 export default function LibraryCards() {
+  const { libraryItems, loading, error } = useLibraryItems();
   const [search, setSearch] = useState("");
   const [visible, setVisible] = useState(6);
 
-  const filteredArticles = articles.filter((item) =>
+  const filteredArticles = libraryItems.filter((item) =>
     item.title.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -78,149 +19,109 @@ export default function LibraryCards() {
   };
 
   return (
-    <section className="pt-[80px] lg:pt-[120px] pb-[120px] lg:pb-[180px]">
+    <section className="pb-[120px] pt-[80px] lg:pb-[180px] lg:pt-[120px]">
       <div className="container-custom">
-
-        {/* TITLE */}
-        <h2 className="text-[20px] lg:text-[24px] font-bold text-[#16226C] mb-[30px] lg:mb-[36px]">
+        <h2 className="mb-[30px] text-[20px] font-bold text-[#16226C] lg:mb-[36px] lg:text-[24px]">
           Поиск по библиотеке
         </h2>
 
-        {/* SEARCH */}
-        <div className="flex flex-col sm:flex-row sm:items-center gap-[20px] sm:gap-[30px] mb-[50px] lg:mb-[72px]">
-
-          <div className="flex items-center gap-[10px] w-full bg-white px-[16px] py-[8px] rounded-[8px] shadow-sm">
-            <img src={searchIcon} alt="" className="w-[18px] h-[18px]" />
-
+        <div className="mb-[50px] flex flex-col gap-[20px] sm:flex-row sm:items-center sm:gap-[30px] lg:mb-[72px]">
+          <div className="flex w-full items-center gap-[10px] rounded-[8px] bg-white px-[16px] py-[8px] shadow-sm">
+            <img src={searchIcon} alt="" className="h-[18px] w-[18px]" />
             <input
               type="text"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
+              onChange={(event) => setSearch(event.target.value)}
               placeholder="Поиск..."
-              className="w-full outline-none text-[14px]"
+              className="w-full text-[14px] outline-none"
             />
           </div>
 
-          <button onClick={() => setSearch(search)}>
-            <img src={findBtn} alt="" className="w-[76px] hover:scale-105 transition" />
+          <button type="button" onClick={() => setSearch(search)}>
+            <img
+              src={findBtn}
+              alt=""
+              className="w-[76px] transition hover:scale-105"
+            />
           </button>
-
         </div>
 
-        {/* EMPTY */}
-        {filteredArticles.length === 0 && (
-          <div className="text-center text-gray-500 text-[18px] mt-[40px]">
+        {loading ? (
+          <div className="rounded-[18px] bg-white px-5 py-4 text-sm text-[#4A5676]">
+            Загрузка библиотеки...
+          </div>
+        ) : null}
+
+        {error ? (
+          <div className="rounded-[18px] border border-[#F1C9CC] bg-[#FFF1F2] px-5 py-4 text-sm text-[#A32024]">
+            {error}
+          </div>
+        ) : null}
+
+        {!loading && !error && filteredArticles.length === 0 ? (
+          <div className="mt-[40px] text-center text-[18px] text-gray-500">
             Ничего не найдено
           </div>
-        )}
+        ) : null}
 
-        {/* GRID */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[24px] lg:gap-[30px]">
-
+        <div className="grid grid-cols-1 gap-[24px] sm:grid-cols-2 lg:grid-cols-3 lg:gap-[30px]">
           {filteredArticles.slice(0, visible).map((item) => (
             <div
               key={item.id}
-              className="
-              group
-              bg-white
-              rounded-[14px]
-              overflow-hidden
-              shadow-sm
-              hover:shadow-2xl
-              transition
-              duration-500
-              hover:-translate-y-2
-              "
+              className="group overflow-hidden rounded-[14px] bg-white shadow-sm transition duration-500 hover:-translate-y-2 hover:shadow-2xl"
             >
-
-              {/* IMAGE */}
-              <div className="overflow-hidden relative">
-
+              <div className="relative overflow-hidden">
                 <img
-                  src={item.image}
-                  alt=""
-                  className="w-full h-[220px] object-cover transition duration-700 group-hover:scale-110"
+                  src={resolveLibraryAsset(item.image)}
+                  alt={item.title}
+                  className="h-[220px] w-full object-cover transition duration-700 group-hover:scale-110"
                 />
 
-                <div className="
-                absolute inset-0
-                bg-gradient-to-t
-                from-black/20
-                to-transparent
-                opacity-0
-                group-hover:opacity-100
-                transition
-                "></div>
-
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition group-hover:opacity-100" />
               </div>
 
-              {/* CONTENT */}
-              <div className="p-[20px] pt-[16px] border-t-[3px] border-[#F61114]">
-
-                <div className="flex justify-between gap-[16px] items-start mb-[16px]">
-
-                  <h3 className="text-[14px] lg:text-[16px] font-bold text-black/80 leading-[20px] uppercase">
+              <div className="border-t-[3px] border-[#F61114] p-[20px] pt-[16px]">
+                <div className="mb-[16px] flex items-start justify-between gap-[16px]">
+                  <h3 className="text-[14px] font-bold uppercase leading-[20px] text-black/80 lg:text-[16px]">
                     {item.title}
                   </h3>
 
-                  {item.pdf && (
-                    <a href={item.pdf} target="_blank" rel="noopener noreferrer">
-
+                  {item.pdf ? (
+                    <a
+                      href={resolveLibraryAsset(item.pdf)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       <img
                         src={pdfIcon}
                         alt="pdf"
-                        className="
-                        w-[36px]
-                        h-[36px]
-                        cursor-pointer
-                        transition
-                        duration-300
-                        hover:scale-110
-                        hover:rotate-6
-                        "
+                        className="h-[36px] w-[36px] cursor-pointer transition duration-300 hover:rotate-6 hover:scale-110"
                       />
-
                     </a>
-                  )}
-
+                  ) : null}
                 </div>
 
-                <p className="text-[13px] lg:text-[14px] text-black/70 leading-[22px]">
-                  {item.text}
+                <p className="text-[13px] leading-[22px] text-black/70 lg:text-[14px]">
+                  {item.text || "Описание не заполнено."}
                 </p>
-
               </div>
-
             </div>
           ))}
         </div>
 
-        {/* LOAD MORE */}
-        {visible < articles.length && (
-          <div className="flex justify-center mt-[60px] lg:mt-[72px]">
-
+        {visible < filteredArticles.length ? (
+          <div className="mt-[60px] flex justify-center lg:mt-[72px]">
             <button
+              type="button"
               onClick={handleLoadMore}
-              className="
-              text-[#1C2561]
-              font-bold
-              flex
-              items-center
-              gap-[16px]
-              hover:gap-[22px]
-              transition-all
-              duration-300
-              "
+              className="flex items-center gap-[16px] font-bold text-[#1C2561] transition-all duration-300 hover:gap-[22px]"
             >
               Показать больше
               <span className="text-[24px]">↓</span>
             </button>
-
           </div>
-        )}
-
+        ) : null}
       </div>
     </section>
   );
 }
-

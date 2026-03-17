@@ -1,0 +1,23 @@
+{
+  "categories": [
+    { "value": "new", "title": "Новинки" },
+    { "value": "vascular", "title": "Сосудистые заболевания" },
+    { "value": "neuro", "title": "Нейродегенеративные заболевания" },
+    { "value": "metabolic", "title": "Метаболический синдром" },
+    { "value": "erectile", "title": "Эректильная дисфункция" }
+  ],
+  "homeProducts": {
+    "eyebrow": "ПРЕПАРАТЫ",
+    "titlePrimary": "CZECHFARM",
+    "titleAccent": "ALLIANCE",
+    "categoryValues": ["vascular", "neuro", "metabolic", "erectile"]
+  },
+  "footer": {
+    "year": "2023",
+    "siteUrl": "https://www.google.com/search?q=Czechfarm+Alliance",
+    "phoneUrl": "tel:+998946609796",
+    "telegramUrl": "https://t.me/HR_CzechfarmAlliance",
+    "facebookUrl": "https://facebook.com",
+    "linkedinUrl": "https://linkedin.com"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "categories": [
+    {
+      "value": "new",
+      "title": "Новинки"
+    },
+    {
+      "value": "vascular",
+      "title": "Сосудистые заболевания"
+    },
+    {
+      "value": "neuro",
+      "title": "Нейродегенеративные заболевания"
+    },
+    {
+      "value": "metabolic",
+      "title": "Метаболический синдром"
+    },
+    {
+      "value": "erectile",
+      "title": "Эректильная дисфункция"
+    }
+  ],
+  "homeProducts": {
+    "eyebrow": "ПРЕПАРАТЫ",
+    "titlePrimary": "CZECHFARM",
+    "titleAccent": "ALLIANCE",
+    "categoryValues": [
+      "vascular",
+      "neuro"
+    ]
+  },
+  "footer": {
+    "year": "2026"
+  }
+}

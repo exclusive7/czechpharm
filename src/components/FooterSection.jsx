@@ -8,8 +8,11 @@ import phoneIcon from "../assets/images/viber_icon 1.svg";
 import telegramIcon from "../assets/images/telegram_icon 1.svg";
 import facebookIcon from "../assets/images/telegram_icon 2.svg";
 import linkedinIcon from "../assets/images/telegram_icon 3.svg";
+import { useSiteContent } from "../hooks/useSiteContent";
 
 export default function Footer() {
+  const { siteContent } = useSiteContent();
+
   return (
     <footer
       style={{
@@ -100,7 +103,7 @@ export default function Footer() {
             <div className="flex gap-3">
 
               <a
-                href="https://www.google.com/search?q=Czechfarm+Alliance"
+                href={siteContent.footer.siteUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-[32px] h-[32px] lg:w-[38px] lg:h-[38px] bg-white/20 rounded-md flex items-center justify-center hover:bg-white/30 transition"
@@ -109,14 +112,14 @@ export default function Footer() {
               </a>
 
               <a
-                href="tel:+998946609796"
+                href={siteContent.footer.phoneUrl}
                 className="w-[32px] h-[32px] lg:w-[38px] lg:h-[38px] bg-white/20 rounded-md flex items-center justify-center hover:bg-white/30 transition"
               >
                 <img src={phoneIcon} alt="" className="w-[16px] lg:w-[18px]" />
               </a>
 
               <a
-                href="https://t.me/HR_CzechfarmAlliance"
+                href={siteContent.footer.telegramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-[32px] h-[32px] lg:w-[38px] lg:h-[38px] bg-white/20 rounded-md flex items-center justify-center hover:bg-white/30 transition"
@@ -125,7 +128,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://facebook.com"
+                href={siteContent.footer.facebookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-[32px] h-[32px] lg:w-[38px] lg:h-[38px] bg-white/20 rounded-md flex items-center justify-center hover:bg-white/30 transition"
@@ -134,7 +137,7 @@ export default function Footer() {
               </a>
 
               <a
-                href="https://linkedin.com"
+                href={siteContent.footer.linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-[32px] h-[32px] lg:w-[38px] lg:h-[38px] bg-white/20 rounded-md flex items-center justify-center hover:bg-white/30 transition"
@@ -150,7 +153,7 @@ export default function Footer() {
 
         {/* COPYRIGHT */}
         <div className="mt-[40px] lg:mt-[56px] text-center text-[12px] lg:text-[16px] text-white">
-          © 2023 Czechfarmalliance
+          © {siteContent.footer.year} Czechfarmalliance
         </div>
 
       </div>

@@ -4,45 +4,25 @@ import searchIcon from "../../assets/productimages/Search.svg";
 import findBtn from "../../assets/productimages/BTN (2).svg";
 import capsulemed1 from "../../assets/productimages/Image (4).svg";
 
-const filters = [
-  { id: 1, title: "ВСЕ", value: "all", items: [] },
-  { id: 2, title: "НОВИНКИ", value: "new", items: [] },
-
-  {
-    id: 3,
-    title: "ОНМК. ХНИК. СОСУДИСТЫЕ ЗАБОЛЕВАНИЯ. ИБС",
-    value: "vascular",
-    items: ["Немотан", "Эльстар"],
-  },
-
-  {
-    id: 4,
-    title:
-      "НЕЙРО-ДЕГЕНЕРАТИВНЫЕ ЗАБОЛЕВАНИЯ ОПОРНО-ДВИГАТЕЛЬНОГО АППАРАТА. ОСТЕОПОРОЗ",
-    value: "neuro",
-    items: ["Артзор", "Макстио"],
-  },
-  {
-    id: 5,
-    title: "МЕТАБОЛИЧЕСКИЙ СИНДРОМ. ЖКТ. НИЗКОРОСЛОСТЬ",
-    value: "metabolic",
-    items: ["Соматоп", "Миотир"],
-  },
-
-  {
-    id: 6,
-    title: "ЭРЕКТИЛЬНАЯ ДИСФУНКЦИЯ. БЕСПЛОДИЕ. МКБ",
-    value: "erectile",
-    items: ["Зидена", "Дуинум"],
-  },
-];
-
 export default function ProductsSidebar({
+  categories,
+  products,
   search,
   setSearch,
   setLetter,
   setOpenSidebar
 }) {
+  const filters = categories.map((item, index) => ({
+    id: index + 1,
+    title: item.title,
+    value: item.value,
+    items:
+      item.value === "all"
+        ? []
+        : products
+            .filter((product) => product.category === item.value)
+            .map((product) => product.name),
+  }));
 
   const [openId, setOpenId] = useState(null);
   const [openSearch, setOpenSearch] = useState(false);
@@ -190,7 +170,7 @@ export default function ProductsSidebar({
 
         {openId && (
           <span className="bg-red-600 text-white text-[10px] px-[6px] py-[2px] rounded-full">
-            active
+            активно
           </span>
         )}
 

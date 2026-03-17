@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import burgerIcon from "../assets/icons/Nav.svg";
 import searchIcon from "../assets/icons/Search.svg";
@@ -33,12 +33,14 @@ export default function Header() {
   }, [menuOpen]);
 
   return (
-    <header className="relative bg-white py-[16px] lg:py-[24px]">
+    <header className="sticky top-0 z-40 bg-white/95 py-[16px] backdrop-blur lg:py-[24px]">
       <div className="container-custom flex items-center justify-between">
         {/* LEFT */}
         <div className="flex items-center gap-[40px] lg:gap-[94px]">
           {/* Logo */}
-          <img src={logo} alt="logo" className="h-[40px] lg:h-[56px]" />
+          <Link to="/" className="shrink-0">
+            <img src={logo} alt="logo" className="h-[40px] lg:h-[56px]" />
+          </Link>
 
           {/* Desktop Nav */}
           <nav className="hidden lg:flex gap-[36px] text-[16px] font-bold text-[#16226C]">
