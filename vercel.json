@@ -1,7 +1,13 @@
 {
+  "crons": [
+    {
+      "path": "/api/cron/contact-queue",
+      "schedule": "0 6 * * *"
+    }
+  ],
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!api/|assets/|uploads/|favicon.ico|.*\\.).*)",
       "destination": "/index.html"
     }
   ]
