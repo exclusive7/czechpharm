@@ -10,8 +10,11 @@ const __dirname = path.dirname(__filename);
 const ENV_PATH = path.join(__dirname, ".env");
 const DIST_DIR = path.join(__dirname, "dist");
 const DIST_INDEX_PATH = path.join(DIST_DIR, "index.html");
+const PERSISTENT_STORAGE_DIR = String(process.env.PERSISTENT_STORAGE_DIR ?? "").trim();
 
-const DATA_DIR = path.join(__dirname, "data");
+const DATA_DIR = PERSISTENT_STORAGE_DIR
+  ? path.join(PERSISTENT_STORAGE_DIR, "data")
+  : path.join(__dirname, "data");
 const PRODUCTS_PATH = path.join(DATA_DIR, "products.json");
 const SITE_CONTENT_PATH = path.join(DATA_DIR, "siteContent.json");
 const CONTACT_SETTINGS_PATH = path.join(DATA_DIR, "contactSettings.json");
@@ -46,7 +49,9 @@ const SEED_VACANCIES_PATH = path.join(
   "defaultVacancies.json"
 );
 
-const UPLOADS_DIR = path.join(__dirname, "public", "uploads");
+const UPLOADS_DIR = PERSISTENT_STORAGE_DIR
+  ? path.join(PERSISTENT_STORAGE_DIR, "uploads")
+  : path.join(__dirname, "public", "uploads");
 const CONTENT_TYPE_BY_EXTENSION = {
   ".css": "text/css; charset=utf-8",
   ".gif": "image/gif",
