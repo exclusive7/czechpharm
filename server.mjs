@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { createServer } from "node:http";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createHash, randomUUID } from "node:crypto";
 import { fileURLToPath } from "node:url";
@@ -8,6 +8,8 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const ENV_PATH = path.join(__dirname, ".env");
+const DIST_DIR = path.join(__dirname, "dist");
+const DIST_INDEX_PATH = path.join(DIST_DIR, "index.html");
 
 const DATA_DIR = path.join(__dirname, "data");
 const PRODUCTS_PATH = path.join(DATA_DIR, "products.json");
@@ -45,6 +47,23 @@ const SEED_VACANCIES_PATH = path.join(
 );
 
 const UPLOADS_DIR = path.join(__dirname, "public", "uploads");
+const CONTENT_TYPE_BY_EXTENSION = {
+  ".css": "text/css; charset=utf-8",
+  ".gif": "image/gif",
+  ".html": "text/html; charset=utf-8",
+  ".ico": "image/x-icon",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".js": "application/javascript; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".pdf": "application/pdf",
+  ".png": "image/png",
+  ".svg": "image/svg+xml",
+  ".txt": "text/plain; charset=utf-8",
+  ".webp": "image/webp",
+  ".woff": "font/woff",
+  ".woff2": "font/woff2",
+};
 
 const DEFAULT_SITE_CONTENT = JSON.parse(
   await readFile(SEED_SITE_CONTENT_PATH, "utf8")
@@ -167,6 +186,78 @@ function sendJsonWithHeaders(response, statusCode, payload, headers) {
     ...headers,
   });
   response.end(JSON.stringify(payload));
+}
+
+function getContentType(filePath) {
+  return (
+    CONTENT_TYPE_BY_EXTENSION[path.extname(filePath).toLowerCase()] ||
+    "application/octet-stream"
+  );
+}
+
+function isPathInside(parentPath, targetPath) {
+  const relativePath = path.relative(parentPath, targetPath);
+  return (
+    relativePath === "" ||
+    (!relativePath.startsWith("..") && !path.isAbsolute(relativePath))
+  );
+}
+
+async function sendFile(response, filePath) {
+  const fileContent = await readFile(filePath);
+  response.writeHead(200, {
+    "Content-Type": getContentType(filePath),
+    "Cache-Control": filePath.endsWith(".html")
+      ? "no-cache"
+      : "public, max-age=31536000, immutable",
+  });
+  response.end(fileContent);
+}
+
+async function tryServeFile(response, filePath, rootPath) {
+  const resolvedFilePath = path.resolve(filePath);
+
+  if (!isPathInside(rootPath, resolvedFilePath)) {
+    return false;
+  }
+
+  try {
+    const fileStats = await stat(resolvedFilePath);
+
+    if (!fileStats.isFile()) {
+      return false;
+    }
+
+    await sendFile(response, resolvedFilePath);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function serveFrontendRoute(response, pathname) {
+  const decodedPathname = decodeURIComponent(pathname || "/");
+
+  if (decodedPathname.startsWith("/uploads/")) {
+    const relativeUploadPath = decodedPathname.replace(/^\/uploads\//u, "");
+    return tryServeFile(response, path.join(UPLOADS_DIR, relativeUploadPath), UPLOADS_DIR);
+  }
+
+  const normalizedPathname =
+    decodedPathname === "/" ? "/index.html" : decodedPathname;
+  const relativeAssetPath = normalizedPathname.replace(/^\/+/u, "");
+  const assetPath = path.join(DIST_DIR, relativeAssetPath);
+  const assetServed = await tryServeFile(response, assetPath, DIST_DIR);
+
+  if (assetServed) {
+    return true;
+  }
+
+  if (!path.extname(decodedPathname)) {
+    return tryServeFile(response, DIST_INDEX_PATH, DIST_DIR);
+  }
+
+  return false;
 }
 
 async function seedFile(targetPath, seedPath) {
@@ -1540,6 +1631,14 @@ const server = createServer(async (request, response) => {
       return;
     }
 
+    if (request.method === "GET" || request.method === "HEAD") {
+      const routeServed = await serveFrontendRoute(response, url.pathname);
+
+      if (routeServed) {
+        return;
+      }
+    }
+
     sendJson(response, 404, { message: "Маршрут не найден." });
   } catch (error) {
     sendJson(response, 500, {
@@ -1555,6 +1654,8 @@ setInterval(() => {
   void processContactRequestQueue();
 }, 30 * 1000);
 
-server.listen(3001, () => {
-  console.log("Products API running on http://localhost:3001");
+const PORT = Number(process.env.PORT) || 3001;
+
+server.listen(PORT, () => {
+  console.log(`Czechpharm server running on http://localhost:${PORT}`);
 });
