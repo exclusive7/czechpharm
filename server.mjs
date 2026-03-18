@@ -137,10 +137,11 @@ function getNumberEnvValue(name, fallback = 12) {
   return Number.isFinite(numericValue) && numericValue > 0 ? numericValue : fallback;
 }
 
-let ADMIN_EMAIL = String(getEnvValue("ADMIN_EMAIL", "czechadmin"))
+let ADMIN_EMAIL = String(getEnvValue("ADMIN_LOGIN", getEnvValue("ADMIN_EMAIL", "czechadmin")))
   .trim()
   .toLowerCase();
 let ADMIN_PASSWORD_HASH = String(getEnvValue("ADMIN_PASSWORD_HASH", "")).trim();
+const ADMIN_PASSWORD = String(getEnvValue("ADMIN_PASSWORD", "")).trim();
 const SESSION_SECRET = String(getEnvValue("SESSION_SECRET", randomUUID())).trim();
 const SESSION_TTL_HOURS = getNumberEnvValue("SESSION_TTL_HOURS", 12);
 const SESSION_COOKIE_NAME = "czechfarm_admin_session";
@@ -152,6 +153,10 @@ const CONTACT_QUEUE_MAX_RETRY_MS = 60 * 60 * 1000;
 
 const sessions = new Map();
 let contactQueueProcessing = false;
+
+if (!ADMIN_PASSWORD_HASH && ADMIN_PASSWORD) {
+  ADMIN_PASSWORD_HASH = await bcrypt.hash(ADMIN_PASSWORD, 12);
+}
 
 function sendJson(response, statusCode, payload) {
   response.writeHead(statusCode, {
